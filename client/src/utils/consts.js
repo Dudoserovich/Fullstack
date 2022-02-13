@@ -1,0 +1,8 @@
+export const ADMIN_ROUTE = '/admin'
+export const VISITOR_ROUTE = '/visitor'
+export const LOGIN_ROUTE = '/login'
+export const REGISTRATION_ROUTE = '/registration'
+export const VISITOR_CHOICE = '/visitorChoice'
+export const MOVIE_INFORMATION = '/movieInformation'
+export const HISTORY = '/historyChoosen'
+export const NEW_FILMS = '/newFilms'
