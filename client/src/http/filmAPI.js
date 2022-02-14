@@ -11,7 +11,7 @@ export const refreshFilm = async (film) => {
 }
 
 export const deleteFilm = async (idMovie) => {
-    const {data} = await $authHost.delete(`api/movieInformation:idMovie`)
+    const {data} = await $authHost.delete(`api/movieInformation${'?idMovie='+ idMovie}`)
     return data
 }
 

@@ -9,13 +9,15 @@ const {Op} = require('sequelize')
 class MovieInformationController {
     async create(req, res, next) {
         const {nameMovie, genre, year, time, ageLimit} = req.body
-        let movie = await MovieInformation.findOne({where:{nameMovie, year}})
+        if (nameMovie && genre && year && time && ageLimit) {
+            let movie = await MovieInformation.findOne({where: {nameMovie, year}})
 
-        if (!movie) {
-            const movieInformation = await MovieInformation.create({nameMovie, genre, year, time, ageLimit})
-            return res.json(movieInformation)
-        } else
-            next(ApiError.badRequest(`Фильм ${nameMovie} (${year}) уже добавлен`))
+            if (!movie) {
+                const movieInformation = await MovieInformation.create({nameMovie, genre, year, time, ageLimit})
+                return res.json(movieInformation)
+            } else
+                next(ApiError.badRequest(`Фильм ${nameMovie} (${year}) уже добавлен`))
+        } else next(ApiError.badRequest(`Одно из полей пусто!`))
     }
 
     async get(req, res) {

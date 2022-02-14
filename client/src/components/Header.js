@@ -72,7 +72,7 @@ const Header = observer(() => {
                         }
                         <Button className="justify-content-end"
                                 variant={"outline-danger"}
-                                style={{marginRight: '4px'}}
+                                style={{marginLeft: '10px'}}
                                 onClick={logOut}
                         >
                             Выйти
