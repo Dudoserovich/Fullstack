@@ -14,6 +14,8 @@ class AdminController {
         const {login, password} = req.body
         const admin = await Admin.findOne({where: {login}})
 
+        if (!login || !password)
+            return next(ApiError.badRequest('Пустой логин или пароль'))
         if (!admin)
             return next(ApiError.badRequest('Вы ещё не зарегистрированы'))
         let comparePassword = bcrypt.compareSync(password, admin.password)

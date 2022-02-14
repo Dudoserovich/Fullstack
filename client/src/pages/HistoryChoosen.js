@@ -1,10 +1,12 @@
 import React from 'react';
+import Header from "../components/Header";
 
 const HistoryChoosen = () => {
     return (
-        <div>
-            HistoryChoosen
-        </div>
+        <>
+            <Header/>
+            <p>HistoryChoosen</p>
+        </>
     );
 };
 

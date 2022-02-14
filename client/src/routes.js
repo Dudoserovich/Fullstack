@@ -11,7 +11,6 @@ import Films from "./pages/Films";
 import AuthAdmin from "./pages/AuthAdmin";
 import General from "./pages/General";
 import AuthVisitor from "./pages/AuthVisitor";
-import RegistrationVisitor from "./pages/RegistrationVisitor";
 import Visitor from "./pages/Visitor";
 import HistoryChoosen from "./pages/HistoryChoosen";
 import NewFilms from "./pages/NewFilms";
@@ -19,56 +18,60 @@ import NewFilms from "./pages/NewFilms";
 export const authAdminRoutes = [
     {
         path: ADMIN_ROUTE,
-        Component: Admin
+        element: <Admin/>
     },
     {
         path: MOVIE_INFORMATION,
-        Component: Films
+        element: <Films/>
     },
     {
         path: HISTORY,
-        Component: HistoryChoosen
+        element: <HistoryChoosen/>
     },
     {
         path: NEW_FILMS,
-        Component: NewFilms
+        element: <NewFilms/>
     }
 ]
 
 export const authVisitorRoutes = [
     {
+        path: VISITOR_ROUTE,
+        element: <Visitor/>
+    },
+    {
         path: VISITOR_CHOICE,
-        Component: Visitor
+        element: <VISITOR_CHOICE/>
     },
     {
         path: MOVIE_INFORMATION,
-        Component: Films
+        element: <Films/>
     },
     {
         path: HISTORY,
-        Component: HistoryChoosen
+        element: <HistoryChoosen/>
     },
     {
         path: NEW_FILMS,
-        Component: NewFilms
+        element: <NewFilms/>
     }
 ]
 
 export const publicRoutes = [
     {
         path: ADMIN_ROUTE + LOGIN_ROUTE,
-        Component: AuthAdmin
+        element: <AuthAdmin/>
     },
     {
         path: '/',
-        Component: General
+        element: <General/>
     },
     {
         path: VISITOR_ROUTE + LOGIN_ROUTE,
-        Component: AuthVisitor
+        element: <AuthVisitor/>
     },
     {
         path: VISITOR_ROUTE + REGISTRATION_ROUTE,
-        Component: RegistrationVisitor
+        element: <AuthVisitor/>
     }
 ]

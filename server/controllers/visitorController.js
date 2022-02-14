@@ -30,6 +30,8 @@ class VisitorController {
         const {login, password} = req.body
         const visitor = await Visitor.findOne({where: {login}})
 
+        if (!login || !password)
+            return next(ApiError.badRequest('Пустой логин или пароль'))
         if (!visitor)
             return next(ApiError.badRequest('Вы ещё не зарегистрированы'))
         let comparePassword = bcrypt.compareSync(password, visitor.password)

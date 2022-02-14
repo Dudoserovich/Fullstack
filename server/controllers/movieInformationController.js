@@ -46,7 +46,9 @@ class MovieInformationController {
 
         // ищем по названию и жанру
         if (nameMovie && genre && !year) {
-            movies = await MovieInformation.findAll({where:{nameMovie, genre}})
+            movies = await MovieInformation.findAll({where:{ nameMovie: {
+                        [Op.like]: `%${nameMovie}%`
+                    }, genre}})
         }
 
         // ищем по названию и году
