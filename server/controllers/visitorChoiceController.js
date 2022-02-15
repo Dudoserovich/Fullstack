@@ -40,6 +40,8 @@ class VisitorChoiceController {
             let film
             for (const item of visitorChoice) {
                 film = await MovieInformation.findOne({where: {idMovie: item.dataValues.movieInformationIdMovie}})
+                //console.log(film)
+                film.dataValues.dateVisit = item.dateVisit
                 films.push(film)
                 //console.log(item.dataValues.movieInformationIdMovie)
             }
@@ -56,6 +58,7 @@ class VisitorChoiceController {
     async getOne(req, res, next) {
         const {login} = req.params
         console.log(login)
+
         if (login) {
             let visitorChoice = await VisitorChoice.findAll({where: {visitorLogin: login}})
 

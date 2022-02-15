@@ -2,6 +2,7 @@ const {MovieInformation} = require('../models/models')
 const ApiError = require('../error/ApiError')
 
 const {Op} = require('sequelize')
+const {log} = require("nodemon/lib/utils");
 
 // по хорошему нужны проверки на правильность данных,
 // но возможно это уже сделаю на фронте
@@ -10,13 +11,19 @@ class MovieInformationController {
     async create(req, res, next) {
         const {nameMovie, genre, year, time, ageLimit} = req.body
         if (nameMovie && genre && year && time && ageLimit) {
-            let movie = await MovieInformation.findOne({where: {nameMovie, year}})
+            if (year < 1980 || year > new Date().getFullYear())
+                next(ApiError.badRequest(`Введённый год выходит за диапазон 1980..${new Date().getFullYear()}`))
+            else if (time < 30 || time > 180)
+                next(ApiError.badRequest(`Введённое время выходит за диапазон 30..180`))
+            else {
+                let movie = await MovieInformation.findOne({where: {nameMovie, year}})
 
-            if (!movie) {
-                const movieInformation = await MovieInformation.create({nameMovie, genre, year, time, ageLimit})
-                return res.json(movieInformation)
-            } else
-                next(ApiError.badRequest(`Фильм ${nameMovie} (${year}) уже добавлен`))
+                if (!movie) {
+                    const movieInformation = await MovieInformation.create({nameMovie, genre, year, time, ageLimit})
+                    return res.json(movieInformation)
+                } else
+                    next(ApiError.badRequest(`Фильм ${nameMovie} (${year}) уже добавлен`))
+            }
         } else next(ApiError.badRequest(`Одно из полей пусто!`))
     }
 
@@ -85,12 +92,12 @@ class MovieInformationController {
     }
 
     async refresh(req, res, next) {
-        const {idMovie, nameMovie, genre, year, time, ageLimit} = req.query
+        const {idMovie, nameMovie, genre, year, time, ageLimit} = req.body
         let movie = await MovieInformation.findOne({where:{idMovie}})
         if (!nameMovie && !genre && !year && !time && !ageLimit)
             next(ApiError.badRequest(`Фильм с id:${idMovie} не обновлён. Не заданы обновляемые параметры`))
         else if (movie) {
-            movie = await MovieInformation.update(
+            const newMovie = await MovieInformation.update(
                 { nameMovie: nameMovie,
                     genre: genre,
                     year: year,
@@ -98,7 +105,7 @@ class MovieInformationController {
                     ageLimit: ageLimit
                 },
                 { where: {idMovie} })
-            return res.json(movie)
+            return res.json(newMovie)
         }
         else
             next(ApiError.badRequest(`Обновляемый фильм не найден`))

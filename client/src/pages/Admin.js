@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from "../components/Header";
 import {Container, ListGroup} from "react-bootstrap";
-import {MOVIE_INFORMATION, NEW_FILMS} from "../utils/consts";
+import {HISTORY, MOVIE_INFORMATION, NEW_FILMS} from "../utils/consts";
 
 const Admin = () => {
     return (
@@ -17,7 +17,7 @@ const Admin = () => {
                     <ListGroup.Item variant="success" action href={NEW_FILMS}>
                         Посмотреть фильмы, выпущенные в текущем году
                     </ListGroup.Item>
-                    <ListGroup.Item variant="info" action href="#link">
+                    <ListGroup.Item variant="info" action href={HISTORY}>
                         Просмотреть выбор конкретного посетителя
                     </ListGroup.Item>
                 </ListGroup>

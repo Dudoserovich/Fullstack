@@ -46,7 +46,10 @@ const Header = observer(() => {
                                           href={NEW_FILMS}>
                                     Список новых фильмов
                                 </Nav.Link>
-                                <Nav.Link href="#link">Выбор посетителей</Nav.Link>
+                                <Nav.Link className=
+                                              {window.location.href.substr(21) !== HISTORY
+                                                  ? '': 'nav-link active'}
+                                    href={HISTORY}>Выбор посетителей</Nav.Link>
                             </>
                             :
                             <>

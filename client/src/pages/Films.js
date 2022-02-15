@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Header from "../components/Header";
 import {Context} from "../index";
-import {createFilm, deleteFilm, getAllFilms, getFilms} from "../http/filmAPI";
+import {createFilm, deleteFilm, getAllFilms, getFilms, refreshFilm} from "../http/filmAPI";
 import {observer} from "mobx-react-lite";
-import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
+import {Button, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {loginVisitor} from "../http/userAPI";
 import {ADMIN_ROUTE} from "../utils/consts";
+import {createChoose} from "../http/chooseAPI";
 
 const Films = observer(() => {
     const {film} = useContext(Context)
@@ -28,6 +29,9 @@ const Films = observer(() => {
     const [time, setTime] = useState('')
     const [yearLimit, setYearLimit] = useState(y)
 
+    const [lgShow, setLgShow] = useState(false);
+    const [m, setMovie] = useState({});
+
     if (typeUser === 'admin') {
         useEffect(() => {
             getAllFilms().then(data => {
@@ -47,11 +51,6 @@ const Films = observer(() => {
 
     const addFilm = async () => {
         try {
-            if (year < 1980 || year > new Date().getFullYear())
-                alert(`Введённый год выходит за диапазон 1980..${new Date().getFullYear()}`)
-            else if (time < 30 || time > 180)
-                alert(`Введённое время выходит за диапазон 30..180`)
-            else {
                 //console.log(genre + ' ' + yearLimit)
                 let movie = {nameMovie, genre, year, time, ageLimit: yearLimit}
                 //console.log(movie)
@@ -60,10 +59,92 @@ const Films = observer(() => {
                     film.setFilms(data)
                     //console.log(film.getNewFilms)
                 })
-            }
         } catch (e) {
             alert(e.response.data.message)
         }
+    }
+
+    const returnModal = (movie) => {
+        console.log(typeof movie)
+        return (
+            <Modal
+                size="lg"
+                show={lgShow}
+                onHide={() => {
+                    getAllFilms().then(data => {
+                        film.setFilms(data)
+                        //console.log(film.getNewFilms)
+                    })
+                    setLgShow(false)
+                }}
+                aria-labelledby="example-modal-sizes-title-lg"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="example-modal-sizes-title-lg">
+                        Редактирование фильма
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form className="d-flex flex-column">
+                        <Form.Control
+                            className="mt-0"
+                            placeholder="Введите Название"
+                            value={movie.nameMovie}
+                            onChange={e => movie.nameMovie = e.target.value}
+                        />
+                        <Form.Select
+                            className="mt-3"
+                            placeholder="Введите Жанр"
+                            value={movie.genre}
+                            onChange={e => movie.genre = e.target.value}
+                        >
+                            {genres.slice(1).map(g =>
+                                <option>{g}</option>
+                            )}
+                        </Form.Select>
+                        <Form.Control
+                            className="mt-3"
+                            placeholder="Введите Год"
+                            value={movie.year}
+                            onChange={e => movie.year = e.target.value}
+                        />
+                        <Form.Control
+                            className="mt-3"
+                            placeholder="Введите Время"
+                            value={movie.time}
+                            onChange={e => movie.time = e.target.value}
+                        />
+                        <Form.Select
+                            className="mt-3"
+                            placeholder="Введите Возрастное ограничение"
+                            value={movie.ageLimit}
+                            onChange={e => movie.ageLimit = e.target.value}
+                        >
+                            {yearLimits.map(y =>
+                                <option>{y}</option>
+                            )}
+                        </Form.Select>
+                        <Button className="mt-2 mb-0 align-self-end"
+                                variant={"outline-success"}
+                                onClick={async () => {
+                                    try {
+                                        await refreshFilm(movie)
+                                        getAllFilms().then(data => {
+                                            film.setFilms(data)
+                                            //console.log(film.getNewFilms)
+                                        })
+                                    } catch (e) {
+                                        alert(e.response.data.message)
+                                    }
+                                    setLgShow(false)
+                                }}
+                        >
+                            Изменить
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+        )
     }
 
     /*    const select = async () => {
@@ -222,9 +303,19 @@ const Films = observer(() => {
                                     ><Button
                                         variant="outline-warning"
                                         style={{margin: 5}}
+                                        onClick={() =>
+                                            {setLgShow(true)
+                                            setMovie(movie)}
+                                        }
                                     >
                                         Изменить
-                                    </Button></td>
+                                    </Button>
+                                        {lgShow === true ?
+                                            returnModal(m)
+                                            :
+                                            ''
+                                        }
+                                    </td>
                                     <td
                                         style={{verticalAlign: 'middle'}}
                                     ><Button
@@ -251,6 +342,15 @@ const Films = observer(() => {
                                 ><Button
                                     variant="outline-warning"
                                     style={{margin: 5}}
+                                    onClick={async () => {
+                                        console.log(movie.idMovie)
+                                        try {
+                                            await createChoose(movie.idMovie)
+                                            alert(`Выбран фильм ${movie.nameMovie} ${movie.year}`)
+                                        } catch (e) {
+                                            alert(e.response.data.message)
+                                        }
+                                    }}
                                 >
                                     Выбрать
                                 </Button></td>

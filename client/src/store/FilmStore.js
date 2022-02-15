@@ -4,6 +4,7 @@ export default class FilmStore {
     constructor() {
         this._films = []
         this._newFilms = []
+        this._history = []
 
         makeAutoObservable(this)
     }
@@ -22,5 +23,13 @@ export default class FilmStore {
 
     get getNewFilms() {
         return this._newFilms
+    }
+
+    setHistory(data) {
+        this._history = data
+    }
+
+    get getHistory() {
+        return this._history
     }
 }
