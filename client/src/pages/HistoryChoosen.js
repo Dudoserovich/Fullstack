@@ -5,6 +5,7 @@ import {Context} from "../index";
 import {Button, Container, Table} from "react-bootstrap";
 import {deleteFilm, getAllFilms} from "../http/filmAPI";
 import {getAllChoose} from "../http/chooseAPI";
+import AllUsers from "../components/allUsers";
 
 const HistoryChoosen = observer (() => {
     const {film} = useContext(Context)
@@ -29,7 +30,10 @@ const HistoryChoosen = observer (() => {
                 }
                 </h2>
                 {film.getHistory.length === 0 ?
-                    'Вы пока ничего не выбирали!'
+                    typeUser !== 'admin' ?
+                        'Вы пока ничего не выбирали!'
+                        :
+                        <AllUsers/>
                     :
                 <Table striped bordered hover>
                     <thead>
@@ -45,7 +49,7 @@ const HistoryChoosen = observer (() => {
                     <tbody>
                     {film.getHistory.map(movie =>
                             <tr key={movie.idMovie}>
-                                <td>{"Дата: " + new Date(movie.dateVisit).toLocaleDateString() + ", Время: " +
+                                <td>{"Дата: " + new Date(movie.dateVisit).toLocaleDateString() + `,`}<br/>{`Время: ` +
                                 new Date(movie.dateVisit).toLocaleTimeString()}</td>
                                 <td>{movie.nameMovie}</td>
                                 <td>{movie.genre}</td>

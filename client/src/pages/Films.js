@@ -64,8 +64,8 @@ const Films = observer(() => {
         }
     }
 
-    const returnModal = (movie) => {
-        console.log(typeof movie)
+    const returnModal = (FilmMove) => {
+        //console.log(typeof movie)
         return (
             <Modal
                 size="lg"
@@ -89,14 +89,14 @@ const Films = observer(() => {
                         <Form.Control
                             className="mt-0"
                             placeholder="Введите Название"
-                            value={movie.nameMovie}
-                            onChange={e => movie.nameMovie = e.target.value}
+                            value={FilmMove.nameMovie}
+                            onChange={e => FilmMove.nameMovie = e.target.value}
                         />
                         <Form.Select
                             className="mt-3"
                             placeholder="Введите Жанр"
-                            value={movie.genre}
-                            onChange={e => movie.genre = e.target.value}
+                            value={FilmMove.genre}
+                            onChange={e => FilmMove.genre = e.target.value}
                         >
                             {genres.slice(1).map(g =>
                                 <option>{g}</option>
@@ -105,20 +105,20 @@ const Films = observer(() => {
                         <Form.Control
                             className="mt-3"
                             placeholder="Введите Год"
-                            value={movie.year}
-                            onChange={e => movie.year = e.target.value}
+                            value={FilmMove.year}
+                            onChange={e => FilmMove.year = e.target.value}
                         />
                         <Form.Control
                             className="mt-3"
                             placeholder="Введите Время"
-                            value={movie.time}
-                            onChange={e => movie.time = e.target.value}
+                            value={FilmMove.time}
+                            onChange={e => FilmMove.time = e.target.value}
                         />
                         <Form.Select
                             className="mt-3"
                             placeholder="Введите Возрастное ограничение"
-                            value={movie.ageLimit}
-                            onChange={e => movie.ageLimit = e.target.value}
+                            value={FilmMove.ageLimit}
+                            onChange={e => FilmMove.ageLimit = e.target.value}
                         >
                             {yearLimits.map(y =>
                                 <option>{y}</option>
@@ -128,7 +128,7 @@ const Films = observer(() => {
                                 variant={"outline-success"}
                                 onClick={async () => {
                                     try {
-                                        await refreshFilm(movie)
+                                        await refreshFilm(FilmMove)
                                         getAllFilms().then(data => {
                                             film.setFilms(data)
                                             //console.log(film.getNewFilms)
@@ -278,14 +278,6 @@ const Films = observer(() => {
                         <th>Год<br/>производства</th>
                         <th>Время</th>
                         <th>Возрастное<br/>ограничение</th>
-                        {/*{typeUser === 'admin' ?
-                            <>
-                                <th> </th>
-                                <th> </th>
-                            </>
-                        :
-                            <th> </th>
-                        }*/}
                     </tr>
                     </thead>
                     <tbody>
@@ -360,7 +352,6 @@ const Films = observer(() => {
                     </tbody>
                 </Table>
             </Container>
-            {/*<p>Films</p>*/}
         </>
     );
 });

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const {VisitorChoice, MovieInformation} = require("../models/models");
+const {VisitorChoice, MovieInformation, Visitor} = require("../models/models");
 const ApiError = require("../error/ApiError");
 const {param} = require("express/lib/router");
 

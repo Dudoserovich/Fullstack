@@ -5,6 +5,11 @@ export const createChoose = async (idMovie) => {
     return data
 }
 
+export const getAllUsers = async () => {
+    const {data} = await $authHost.get(`api/visitorChoice`)
+    return data
+}
+
 export const getOneChoose = async () => {
     const {data} = await $authHost.get(`api/visitorChoice`)
     return data
